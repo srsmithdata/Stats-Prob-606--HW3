@@ -1,0 +1,77 @@
+---
+title: "Probability and Statistics HW 3"
+author: "S Richard Smith"
+date: "February 25, 2016"
+output:
+  html_document:
+    theme: flatly
+    highlight: pygment
+    code_folding: hide
+
+---
+# Practice
+
+## Q3.21 Married Women
+
+> The 2010 American Community Survey estimates that 47.1% of women ages 15 years and over are married.
+
+### (a) We randomly select three women between these ages. What is the probability that the third woman selected is the only one who is married? 
+
+The above sounds like it would be a binomial distributijon. But first, let's compare it against the qualifying attributes:
+
+#### 1. The trials are independent. 
+This qualification is met since the respondents are randomly chosen.
+
+#### 2. The number of trials, n, is fixed. 
+
+The number of trials is discrete and defined as 3.
+
+#### 3. Each trial outcome can be classified as a success or failure. 
+There are 2 possible outcomes only for each "trial." Married or unmarried. 
+
+#### 4. The probability of a success, p, is the same for each trial.
+
+The probability of marriage (success) is given by the survey as 47.1%.
+
+Therefore, we do have a binomial distribution.
+
+
+### (b) What is the probability that all three randomly selected women are married? 
+
+Because we know that these women were randomly selected, we know that each "trial" is independent. Given that, the probability of randomly selecting 3 married women would be the product of the probability of each event.
+
+$$ P(A_1) \times P(A_2) \times ... \times P(A_k) $$
+
+The probability of A is 47.1%. *k* 
+
+$$ .471 \times .471 \times .471 = .471^3 = $$ `r .471^3`
+
+### (c) On average, how many women would you expect to sample before selecting a married woman? What is the standard deviation? 
+
+According to the binomial distribution, we expect to have $k$ successes in $n$ independent Bernoulli trials. The general formula for the the probability of $k$ successes and $n-k$ failures is:
+
+$$ p^k(1-p)^{n-k} $$
+$$ p = .471 $$
+$$ k = 1 \mbox{married woman} $$
+$$ n = 
+
+
+(d) If the proportion of married women was actually 30%, how many women would you expect to sample before selecting a married woman? What is the standard deviation? (e) Based on your answers to parts (c) and (d), how does decreasing the probability of an event a???ect the mean and standard deviation of the wait time until success
+
+## Q3.37 {.tabset}?
+
+## Q3.41 {.tabset}x
+
+# Graded:  {.tabset .tabset-fade .tabset-pills}
+
+## 3.2 (see `normalPlot`)  {.tabset .tabset-fade .tabset-pills}
+
+## 3.4, 3.18 (use `qqnormsim` from lab 3)  {.tabset .tabset-fade .tabset-pills}
+
+## 3.22  {.tabset .tabset-fade .tabset-pills}
+
+## 3.38  {.tabset .tabset-fade .tabset-pills}
+
+## 3.42  {.tabset .tabset-fade .tabset-pills}
+
+
