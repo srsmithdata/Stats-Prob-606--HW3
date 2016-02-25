@@ -15,8 +15,6 @@ output:
 
 > The 2010 American Community Survey estimates that 47.1% of women ages 15 years and over are married.
 
-### (a) We randomly select three women between these ages. What is the probability that the third woman selected is the only one who is married? 
-
 The above sounds like it would be a binomial distributijon. But first, let's compare it against the qualifying attributes:
 
 #### 1. The trials are independent. 
@@ -35,10 +33,27 @@ The probability of marriage (success) is given by the survey as 47.1%.
 
 Therefore, we do have a binomial distribution.
 
+### (a) We randomly select three women between these ages. What is the probability that the third woman selected is the only one who is married? 
+
+Because we know that these women were randomly selected, we know that each "trial" is independent. Given that, the probability of randomly selecting 2 unmarried women and then a married woman would be the product of the probability of each event.
+
+$$ P(A_1) \times P(A_2) \times ... \times P(A_k) $$
+
+$$ P(U) \times P(U) \times P(M) $$
+
+The probability of $M$ is 47.1%. The probability of the woman being married is $1-P(M) = 52.9%$.
+
+$$ 0.529^2 \times .471 = $$
+
+```{r}
+Pm <- 0.471
+UUM <- (1-Pm)^2*Pm
+UUM
+```
 
 ### (b) What is the probability that all three randomly selected women are married? 
 
-Because we know that these women were randomly selected, we know that each "trial" is independent. Given that, the probability of randomly selecting 3 married women would be the product of the probability of each event.
+As above, we know we must take the probability of randomly selecting 3 married women and multiply them together.
 
 $$ P(A_1) \times P(A_2) \times ... \times P(A_k) $$
 
@@ -48,30 +63,65 @@ $$ .471 \times .471 \times .471 = .471^3 = $$ `r .471^3`
 
 ### (c) On average, how many women would you expect to sample before selecting a married woman? What is the standard deviation? 
 
-According to the binomial distribution, we expect to have $k$ successes in $n$ independent Bernoulli trials. The general formula for the the probability of $k$ successes and $n-k$ failures is:
+The geometric distribution gives us the formula to calculate the probability of finding our first success in the $n^th$ trial, based on our knowledge that the probability of success in the first trial is given as $p$. We simply take the probability of failing $n-1$ times (which is $p^{n-1}) and multiply that by the probability of success.
 
-$$ p^k(1-p)^{n-k} $$
+$$ (1-p)^{n-1}p $$
 $$ p = .471 $$
-$$ k = 1 \mbox{married woman} $$
-$$ n = 
+$$ \mu = \frac{1}{p} $$
+$$ \mu = \frac{1}{.471} $$
+```{r}
+MeanWait <- 1/Pm
+MeanWait
+
+```
+
+$$ {\sigma}^2= \frac{1-p}{p^2} $$
+$$ {\sigma}^2= \frac{1-.471}{.471^2} $$
+
+```{r}
+Avgwait <- sqrt((1-Pm)/Pm^2)
+Avgwait
+
+```
+
+We can see this illustrated by taking a random sample (of 300 tests) to see how long it takes us to encounter a married woman.
+
+```{r}
+
+sample <- rgeom(300, prob = .471)
+summary(sample)
+hist(sample, breaks=seq(-0.5,12,1), col='light grey', border='grey', xlab = '')
 
 
-(d) If the proportion of married women was actually 30%, how many women would you expect to sample before selecting a married woman? What is the standard deviation? (e) Based on your answers to parts (c) and (d), how does decreasing the probability of an event a???ect the mean and standard deviation of the wait time until success
+```
 
-## Q3.37 {.tabset}?
+(d) If the proportion of married women was actually 30%, how many women would you expect to sample before selecting a married woman? What is the standard deviation? 
 
-## Q3.41 {.tabset}x
+If the probability of being married changes, we can simply insert that and run the calculations again.
 
-# Graded:  {.tabset .tabset-fade .tabset-pills}
+$$ (1-p)^{n-1}p $$
+$$ p = .30 $$
+$$ \mu = \frac{1}{p} $$
+$$ \mu = \frac{1}{.30} $$
+```{r}
+Pm <- .3
+MeanWait <- 1/Pm
+MeanWait
 
-## 3.2 (see `normalPlot`)  {.tabset .tabset-fade .tabset-pills}
+```
 
-## 3.4, 3.18 (use `qqnormsim` from lab 3)  {.tabset .tabset-fade .tabset-pills}
+$$ {\sigma}^2= \frac{1-p}{p^2} $$
+$$ {\sigma}^2= \frac{1-.471}{.471^2} $$
 
-## 3.22  {.tabset .tabset-fade .tabset-pills}
+```{r}
+Avgwait <- sqrt((1-Pm)/Pm^2)
+Avgwait
 
-## 3.38  {.tabset .tabset-fade .tabset-pills}
+```
 
-## 3.42  {.tabset .tabset-fade .tabset-pills}
 
+
+(e) Based on your answers to parts (c) and (d), how does decreasing the probability of an event affect the mean and standard deviation of the wait time until success?
+
+As we can see from (c) and (d) above, there is an inverse relationship between the probability and the expected wait time until success (or mean). This makes intuitive sense: the less likely something is to be a success (e.g., winning the lottery), the longer you have to wait, or the more trials that will be necessary before success.
 
