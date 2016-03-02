@@ -1,0 +1,405 @@
+---
+output:
+  html_document:
+    theme: flatly
+    highlight: pygment
+    code_folding: hide
+
+---
+
+```{r echo=F, message=FALSE, results='hide'}
+
+require('IS606')
+
+```
+
+# Distribution of Random Variables {.tabset .tabset-fade .tabset-pills}
+S Richard Smith, February 25, 2016
+
+
+## Practice {.tabset}
+
+
+### Q3.1 Area under the curve, Part I {.tabset}
+
+##### a. Z < -1.35
+
+> 8.85%
+
+```{r}
+
+normalPlot(mean = 0, sd = 1, bounds = c(-4, -1.35), tails = F)
+
+```
+
+##### b. Z > 1.48
+
+> 6.94%
+
+```{r}
+
+normalPlot(mean = 0, sd = 1, bounds = c(1.48, 4), tails = F)
+
+```
+
+##### c. -0.4 < Z < 1.5
+
+> 58.9%
+
+```{r}
+
+normalPlot(mean = 0, sd = 1, bounds = c(-0.4, 1.5), tails = F)
+
+```
+
+##### d. abs(Z) > 2
+
+```{r}
+
+normalPlot(mean = 0, sd = 1, bounds = c(-2, 2), tails = T)
+
+```
+
+> Percentage not give on the tails setting. So we'll take $1-inverse$.
+
+```{r}
+
+normalPlot(mean = 0, sd = 1, bounds = c(-2, 2), tails = F)
+
+```
+
+$$1-0.954=0.046=4.6%$$
+
+### Q3.21 Married Women {.tabset}
+
+> The 2010 American Community Survey estimates that 47.1% of women ages 15 years and over are married.
+
+The above sounds like it would be a binomial distribution. But first, let's compare it against the qualifying attributes:
+
+##### 1. The trials are independent. 
+This qualification is met since the respondents are randomly chosen.
+
+##### 2. The number of trials, n, is fixed. 
+
+The number of trials is discrete and defined as 3.
+
+##### 3. Each trial outcome can be classified as a success or failure. 
+There are 2 possible outcomes only for each "trial." Married or unmarried. 
+
+##### 4. The probability of a success, p, is the same for each trial.
+
+The probability of marriage (success) is given by the survey as 47.1%.
+
+Therefore, we do have a binomial distribution.
+
+#### (a) We randomly select three women between these ages. What is the probability that the third woman selected is the only one who is married? 
+
+Because we know that these women were randomly selected, we know that each "trial" is independent. Given that, the probability of randomly selecting 2 unmarried women and then a married woman would be the product of the probability of each event.
+
+$$ P(A_1) \times P(A_2) \times ... \times P(A_k) $$
+
+$$ P(U) \times P(U) \times P(M) $$
+
+The probability of $M$ is 47.1%. The probability of the woman being married is $1-P(M) = 52.9%$.
+
+$$ 0.529^2 \times .471 = $$
+
+```{r}
+Pm <- 0.471
+UUM <- (1-Pm)^2*Pm
+UUM
+```
+
+#### (b) What is the probability that all three randomly selected women are married? 
+
+As above, we know we must take the probability of randomly selecting 3 married women and multiply them together.
+
+$$ P(A_1) \times P(A_2) \times ... \times P(A_k) $$
+
+The probability of A is 47.1%. *k* 
+
+$$ .471 \times .471 \times .471 = .471^3 = $$ `r .471^3`
+
+#### (c) On average, how many women would you expect to sample before selecting a married woman? What is the standard deviation? 
+
+The geometric distribution gives us the formula to calculate the probability of finding our first success in the $n^th$ trial, based on our knowledge that the probability of success in the first trial is given as $p$. We simply take the probability of failing $n-1$ times (which is $p^{n-1}) and multiply that by the probability of success.
+
+$$ (1-p)^{n-1}p $$
+$$ p = .471 $$
+$$ \mu = \frac{1}{p} $$
+$$ \mu = \frac{1}{.471} $$
+```{r}
+MeanWait <- 1/Pm
+MeanWait
+
+```
+
+$$ {\sigma}^2= \frac{1-p}{p^2} $$
+$$ {\sigma}^2= \frac{1-.471}{.471^2} $$
+
+```{r}
+Avgwait <- sqrt((1-Pm)/Pm^2)
+Avgwait
+
+```
+
+We can see this illustrated by taking a random sample (of 300 tests) to see how long it takes us to encounter a married woman.
+
+```{r}
+
+sample <- rgeom(300, prob = .471)
+summary(sample)
+hist(sample, breaks=seq(-0.5,12,1), col='light grey', border='grey', xlab = '')
+
+
+```
+
+(d) If the proportion of married women was actually 30%, how many women would you expect to sample before selecting a married woman? What is the standard deviation? 
+
+If the probability of being married changes, we can simply insert that and run the calculations again.
+
+$$ (1-p)^{n-1}p $$
+$$ p = .30 $$
+$$ \mu = \frac{1}{p} $$
+$$ \mu = \frac{1}{.30} $$
+```{r}
+Pm <- .3
+MeanWait <- 1/Pm
+MeanWait
+
+```
+
+$$ {\sigma}^2= \frac{1-p}{p^2} $$
+$$ {\sigma}^2= \frac{1-.471}{.471^2} $$
+
+```{r}
+Avgwait <- sqrt((1-Pm)/Pm^2)
+Avgwait
+
+```
+
+
+
+(e) Based on your answers to parts (c) and (d), how does decreasing the probability of an event affect the mean and standard deviation of the wait time until success?
+
+As we can see from (c) and (d) above, there is an inverse relationship between the probability and the expected wait time until success (or mean). This makes intuitive sense: the less likely something is to be a success (e.g., winning the lottery), the longer you have to wait, or the more trials that will be necessary before success.
+
+
+## Graded:  {.tabset}
+
+### 3.02 Area under the normal curve, Part II {.tabset}
+
+##### What percent of a standard normal distribution is found in each region?
+
+##### (a) Z>1.13  
+
+> 87.1%
+
+```{r}
+
+normalPlot(mean = 0, sd = 1, bounds = c(-4, 1.13), tails = F)
+
+```
+
+##### (b) Z<0.18 
+
+> 57.1%
+
+```{r}
+
+normalPlot(mean = 0, sd = 1, bounds = c(-4, .18), tails = F)
+
+```
+
+##### (c) Z>8 
+
+> See chart.
+
+```{r}
+
+normalPlot(mean = 0, sd = 1, bounds = c(8, 100), tails = F)
+
+```
+
+##### (d) |Z| < 0.5
+
+> 38.3%
+
+```{r}
+
+normalPlot(mean = 0, sd = 1, bounds = c(-.5, .5), tails = F)
+
+```
+
+
+### 3.4 Triathlon times {.tabset}
+
+In triathlons, it is common for racers to be placed into age and gender groups. Friends Leo and Mary both completed the Hermosa Beach Triathlon, where Leo competed in the Men, Ages 30 - 34 group while Mary competed in the Women, Ages 25 29 group. Leo completed the race in 1:22:28 (4948 seconds), while Mary completed the race in 1:31:53 (5513 seconds). Obviously Leo ﬁnished faster, but they are curious about how they did within their respective groups. Can you help them? Here is some information on the performance of their groups: 
+
+• The ﬁnishing times of the Men, Ages 30 - 34 group has a mean of 4313 seconds with a standard deviation of 583 seconds.  
+• The ﬁnishing times of the Women, Ages 25 - 29 group has a mean of 5261 seconds with a standard deviation of 807 seconds.  
+• The distributions of ﬁnishing times for both groups are approximately Normal. Remember: a better performance corresponds to a faster ﬁnish. 
+
+```{r}
+# Entering variables:
+
+LeoTm <- 4948
+MaryTm <- 5513
+MenMean <- 4313
+MenStDev <- 583
+WmnMean <- 5261
+WmnStDev <- 807
+
+```
+
+
+#### (a) Write down the short-hand for these two normal distributions. 
+
+##### The men's group:
+
+$$ N(\mu=4313,\sigma=583) $$
+
+We use the Greek symbol "mu" ($\mu$) and "sigma" ($\sigma$) to represent the mean and standard deviation.
+
+##### The women's group:
+
+$$ N(\mu=5261,\sigma=807) $$
+
+#### (b) What are the Z-scores for Leo’s and Mary’s ﬁnishing times? What do these Z-scores tell you? 
+
+The Z-score basically tells us how many standard deviations any given observation is away from the mean. It is calculated by dividing the observation's distance from the mean by the standard deviation. 
+
+$$ Z=\frac{x-\mu}{\sigma} $$
+
+normalp 
+```{r}
+
+# Creating a function for the Zscore
+# For graphing purposes, distributions where lower numbers are better (e.g., golfing, tournament rank), the function inverts the scale in those situations using the "positivealignment" argument. Please disregard the "-" in the plot.
+
+zcalc <-
+  function(x, mu, sigma, positivealignment = TRUE, negpossible = TRUE, ... )
+  {
+    if( positivealignment == TRUE)
+    {
+      Lbound <- ifelse( negpossible == TRUE, (-4 * sigma), max( 0, (-4 * sigma) ))
+      Rbound <- ((x - mu) + mu)
+      normalPlot(mean = mu, sd = sigma, bounds = c( Lbound, Rbound ) )
+      zans <- ( x - mu ) / sigma
+    }
+    else
+    {
+      mu <- -mu
+      x <- -x
+      Lbound <- (-4 * sigma) + mu
+      Rbound <- ((x - mu) + mu)
+      normalPlot(mean = mu, sd = sigma, bounds = c( Lbound, Rbound ) )
+        zans <- ( x - mu ) / sigma
+      }
+
+  }
+
+
+
+```
+
+
+> So Leo's Z-score would be:
+
+$$ Z=-(\frac{4948-4313}{583}) $$
+
+The negative is to accomodate the fact that the smaller the value, the lower the percentage (since that means running faster).
+
+```{r}
+# Calculating Leo's Z Score
+## We'll use the function we created:
+## 
+
+manmu <- 4313
+mansigma <- 583
+Leo_x <- 4948
+
+
+zcalc(x = Leo_x, mu = manmu, sigma = mansigma, positivealignment = FALSE, negpossible = FALSE)
+
+```
+
+
+> Mary's Score:
+
+
+```{r}
+# Calculating Leo's Z Score
+## We'll use the function we created:
+## 
+
+wommu <- 5261
+womsigma <- 807
+Mary_x <- 5513
+
+zcalc( x = Mary_x, mu = wommu, sigma = womsigma, positivealignment = FALSE, negpossible = FALSE )
+
+```
+
+
+
+#### (c) Did Leo or Mary rank better in their respective groups? Explain your reasoning. 
+
+> We can clearly see from the distribution graphs above, that Mary performing at 37.7% is far better than Leo's 13.8%. 
+
+The advantage of the Z-score is to be able to compare performance on different scales by normalizing them using their mean and standard deviation. So Mary being only `r (Mary_x - wommu)/womsigma ` below the mean is far better than Leo's `r (Leo_x - manmu)/ mansigma `
+
+(d) What percent of the triathletes did Leo ﬁnish faster than in his group? 
+
+See (c)--13.8%
+
+(e) What percent of the triathletes did Mary ﬁnish faster than in her group? 
+
+See (c)--37.7%
+
+
+(f) If the distributions of ﬁnishing times are not nearly normal, would your answers to parts (b) - (e) change? Explain your reasoning.
+
+Possibly. It depends on the shape of the distribution curve. If the distortion is only at the high end (so the lowest integers--since faster is rarer), it might not affect the distance of Mary and Leo from the mean. However, the distribution could be so different as to reverse the results--although that would be extremely mathematically challenging.  
+
+
+### 3.18 Heights of female college students.
+
+Below are heights of 25 female college students. (see data)
+
+#### (a) The mean height is 61.52 inches with a standard deviation of 4.58 inches. Use this information to determine if the heights approximately follow the 68-95-99.7% Rule. 
+
+```
+{r}
+
+rea
+
+(b) Do these data appear to follow a normal distribution? Explain your reasoning using the graphs provided below.
+Heights 50 55 60 65 70 75
+●
+●
+● ●
+●
+● ●
+●
+● ● ●
+● ●
+● ●
+● ● ●
+●
+● ●
+● ●
+●
+●
+Theoretical Quantiles
+Sample Quantile(use `qqnormsim` from lab 3)  {.tabset .tabset-fade .tabset-pills}
+
+
+
+### 3.22  {.tabset .tabset-fade .tabset-pills}
+
+### 3.38  {.tabset .tabset-fade .tabset-pills}
+
+### 3.42  {.tabset .tabset-fade .tabset-pills}
+
+

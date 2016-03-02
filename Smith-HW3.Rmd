@@ -11,15 +11,42 @@ output:
     toc_depth: 2
 
 ---
+```{r}
+## Area with installations for packages not already installed
+# install.packages("ggplot2")
+require(ggplot2)
+
+
+```
+
+
 # Practice {.tabset}
 
-## Q3.1 (see `normalPlot`), {.tabset}
+## Q3.1 Area under the curve, Part I. (see `normalPlot`) {.tabset}
 
-## Q3.3 {.tabset}x
+### What percent of a standard normal distribution N(?? = 0, = 1) is found in each region? Be sure to draw a graph. 
+
+#### (a) Z<1.35 
+
+```{r}
+
+normalplot
+
+```
+
+
+#### (b) Z>1.48 
+
+#### (c) 0.4 <Z<1.5 
+
+#### (d) |Z| > 2 
+
+
+## Q3.3 {.tabset}
 
 ## Q3.17 (use `qqnormsim` from lab 3) {.tabset}
 
-## Q21 Married Women{.tabset}
+## Q21 Married Women {.tabset}
 
 > The 2010 American Community Survey estimates that 47.1% of women ages 15 years and over are married.
 
@@ -70,6 +97,7 @@ $$ p^k(1-p)^{n-k} $$
 # Graded:  {.tabset .tabset-fade .tabset-pills}
 
 ## 3.2 (see `normalPlot`)  {.tabset .tabset-fade .tabset-pills}
+3.2 Area under the curve, Part II. What percent of a standard normal distribution N(?? = 0, = 1) is found in each region? Be sure to draw a graph. (a) Z>1.13 (b) Z<0.18 (c) Z>8 (d) |Z| < 0.5 
 
 ## 3.4, 3.18 (use `qqnormsim` from lab 3)  {.tabset .tabset-fade .tabset-pills}
 

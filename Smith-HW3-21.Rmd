@@ -15,7 +15,7 @@ output:
 
 > The 2010 American Community Survey estimates that 47.1% of women ages 15 years and over are married.
 
-The above sounds like it would be a binomial distributijon. But first, let's compare it against the qualifying attributes:
+The above sounds like it would be a binomial distribution. But first, let's compare it against the qualifying attributes:
 
 #### 1. The trials are independent. 
 This qualification is met since the respondents are randomly chosen.
